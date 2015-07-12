@@ -11,7 +11,6 @@ tab$month <- as.Date(cut(tab$date, breaks="month"))
 
 tab <- subset(tab, tab$value < 0)
 
-
 # Build simple regexp strings
 transport <- "MYKI|CITYLINK|CITY OF|PAY STAY|EASTLINK TOLL|VICROADS"
 cabs <-"UBER|BLACK CAB|SILVERTOP|INGOGO"
@@ -76,6 +75,7 @@ tab$class <- ifelse(grepl(transport, tab$desc), "Transport",
                     ifelse(grepl(withdrawals, tab$desc), "Random Withdraws",
                     ifelse(grepl(haircuts, tab$desc), "Haircuts", "Other")))))))))))))))))))))))))))))
 
+tab=tab[order(tab$class, tab$desc),]
 #print table
 write.table(tab,file='Expenditure_2014:2015.csv',sep=",",col.names=NA)
 
