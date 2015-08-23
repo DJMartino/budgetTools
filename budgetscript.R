@@ -12,13 +12,13 @@ tab$month <- as.Date(cut(tab$date, breaks="month"))
 tab <- subset(tab, tab$value < 0)
 
 # Build simple regexp strings
-transport <- "MYKI|CITYLINK|CITY OF|PAY STAY|EASTLINK TOLL|VICROADS"
-cabs <-"UBER|BLACK CAB|SILVERTOP|INGOGO"
+transport <- "MYKI|CITYLINK|CITY OF|PAY STAY|EASTLINK TOLL|VICROADS|PARK"
+cabs <-"UBER|BLACK CAB|SILVERTOP|INGOGO|CABS"
 food <- "COLES|IGA|WOOLWORTHS|YOURGROCER|PIEDIMONTE'S|SAFEWAY|SEAFOOD|PIEDIMONTES"
 homewares <- "BUNNINGS|IKEA|HARVEY NORMAN|TEMPLE|STYLISH AFFAIR|JASPER|THOMAS GANNAN|NOTTOOSHABBY|SPOILT|BED BATH N TABLE|DICK SMITH|LOST AND FOUND|OFFICEWORKS|POTS|THEHOME"
 chemist <- "CHEMIST|PHARMACY|PHARMAC|CHEM WAREHS"
 darcy <- "Vet|SUPERPET|P VALE VET"
-medical <- "West Brunswick Clinic|ANGELICA|DENTAL|WHITEH|MelbCityMedicalCentre|IVF|MEDICAL|TMVC|CHIROPRACTIC"
+medical <- "West Brunswick Clinic|ANGELICA|DENTAL|WHITEH|MelbCityMedicalCentre|IVF|MEDICAL|TMVC|CHIROPRACTIC|DR GUY SKINNER|ST VINCENTS HOSPITAL"
 phone_internet <- "VODAFONE|DODO|TELSTRA"
 insurance <- "HBF|BUPA|CGU|INSURANCE"
 itunes <- "ITUNES"
@@ -30,7 +30,7 @@ travel <- "ESCAPE TRAVEL|FLIGHTCENTRE|AIRBNB|QANTAS|ADVANTAGE TRAVEL|ESCAPETRAVE
 books <- "AMAZON|Books"
 subscriptions <- "DROPBOX"
 booze <- "LIQUORLAND|DAN MURPHYS|WINERY|DUTY FREE|BWS|LIQUOR"
-clothes <- "MYER|KMART|MOGO|UNIQLO|TARGET|ANTONS|BIG W|CLEAR IT|DANGERFIELD|Emporium"
+clothes <- "MYER|KMART|MOGO|UNIQLO|TARGET|ANTONS|BIG W|CLEAR IT|DANGERFIELD|Emporium|NICOLAS IMAGE"
 haircuts <- "URBAN MAN|BARBER|VERTIGO|EUREKA|Hair"
 gifts <- "ANGEL FLOWERS|FLOWERS|CHEFS ARMOURY|OUTRE"
 dadmin <- "BILLPAY|BEST AND LESS|DYMOCKS|STRATCO|VACUUM|VISY"
@@ -39,8 +39,9 @@ penalities <- "FINES VIC"
 music <- "RECORDS|GOOGLE"
 funmoney <- "Fun Money|Weekly spend"
 homeloan <- "Loan Repayment|Home Loan"
-memberships<- "eDebit 201175"
+memberships<- "eDebit 201175|FITZY S GYM"
 withdrawals<-'Wdl'
+councilrates<- 'COUNCIL'
 
 # Add a class field to the data, default "other"
 tab$class <- "Other"
@@ -73,9 +74,12 @@ tab$class <- ifelse(grepl(transport, tab$desc), "Transport",
                     ifelse(grepl(homeloan, tab$desc), "Mortgage",
                     ifelse(grepl(memberships, tab$desc), "Memberships",
                     ifelse(grepl(withdrawals, tab$desc), "Random Withdraws",
-                    ifelse(grepl(haircuts, tab$desc), "Haircuts", "Other")))))))))))))))))))))))))))))
+                    ifelse(grepl(councilrates, tab$desc), "Council Rates",
+                    ifelse(grepl(haircuts, tab$desc), "Haircuts", "Other"))))))))))))))))))))))))))))))
 
 tab=tab[order(tab$class, tab$desc),]
+#tab=tab[-grep('Transfer',tab$desc),]
+
 #print table
 write.table(tab,file='Expenditure_2014:2015.csv',sep=",",col.names=NA)
 
